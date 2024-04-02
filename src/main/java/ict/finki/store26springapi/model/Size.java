@@ -1,10 +1,7 @@
 package ict.finki.store26springapi.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Size {
@@ -13,6 +10,10 @@ public class Size {
     private Long id;
     private String name;
     private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public Size() {
     }
