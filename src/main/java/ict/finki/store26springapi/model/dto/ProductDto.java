@@ -8,13 +8,19 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ProductDTO {
-    private Long id;
+public class ProductDto {
+
     private String name;
+
     private Gender gender;
+
     private String description;
+
     private double price;
+
     private byte[] image;
-    private List<SizeDTO> sizes;
+
+    private List<SizeDto> sizes;
+
     private Long categoryId;
 }
