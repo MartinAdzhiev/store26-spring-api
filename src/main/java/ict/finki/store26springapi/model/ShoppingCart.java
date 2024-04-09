@@ -21,8 +21,8 @@ public class ShoppingCart {
     @Enumerated(EnumType.STRING)
     private ShoppingCartStatus status;
 
-    @ManyToOne
-    private User owner;
+    @OneToOne
+    private User user;
 
     @OneToMany(mappedBy = "shoppingCart")
     private List<CartItem> cartItems = new ArrayList<>();

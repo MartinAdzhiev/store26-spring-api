@@ -19,7 +19,7 @@ public class CreditCard {
     private Long id;
 
     @ManyToOne
-    private User owner;
+    private User user;
 
     private String cardNumber;
 

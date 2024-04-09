@@ -37,8 +37,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "owner")
-    private List<ShoppingCart> shoppingCarts = new ArrayList<>();
+    @OneToOne
+    private ShoppingCart shoppingCart;
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
