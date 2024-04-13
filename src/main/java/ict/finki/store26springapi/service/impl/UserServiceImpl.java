@@ -1,5 +1,6 @@
 package ict.finki.store26springapi.service.impl;
 
+import ict.finki.store26springapi.enums.Role;
 import ict.finki.store26springapi.model.User;
 import ict.finki.store26springapi.model.dto.UserInfoResponse;
 import ict.finki.store26springapi.repository.UserRepository;
@@ -32,35 +33,36 @@ public class UserServiceImpl implements UserService {
         };
     }
 
-   public UserInfoResponse userInfo(String email) {
-       User user = userRepository.findByEmail(email).orElseThrow();
+    public UserInfoResponse userInfo(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
 
-       UserInfoResponse userInfoResponse = new UserInfoResponse();
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
 
-       userInfoResponse.setId(user.getId());
-       userInfoResponse.setFirstName(user.getFirstName());
-       userInfoResponse.setLastName(user.getLastName());
-       userInfoResponse.setEmail(user.getEmail());
-       userInfoResponse.setRole(user.getRole());
-       userInfoResponse.setShoppingCart(user.getShoppingCart().getId());
+        userInfoResponse.setId(user.getId());
+        userInfoResponse.setFirstName(user.getFirstName());
+        userInfoResponse.setLastName(user.getLastName());
+        userInfoResponse.setEmail(user.getEmail());
+        userInfoResponse.setRole(user.getRole());
 
-       List<Long> creditCards = user.getCreditCards().stream()
-               .map(creditCard -> creditCard.getId())
-               .collect(Collectors.toList());
+        if (user.getRole().equals(Role.USER)) {
+            userInfoResponse.setShoppingCart(user.getShoppingCart().getId());
 
-       userInfoResponse.setCreditCards(creditCards);
+            List<Long> creditCards = user.getCreditCards().stream()
+                    .map(creditCard -> creditCard.getId())
+                    .collect(Collectors.toList());
 
-       List<Long> reviews = user.getReviews().stream()
-               .map(review -> review.getId())
-               .collect(Collectors.toList());
-       userInfoResponse.setReviews(reviews);
+            userInfoResponse.setCreditCards(creditCards);
 
-       List<Long> orders = user.getOrders().stream()
-               .map(order -> order.getId())
-               .collect(Collectors.toList());
-       userInfoResponse.setOrders(orders);
+            List<Long> reviews = user.getReviews().stream()
+                    .map(review -> review.getId())
+                    .collect(Collectors.toList());
+            userInfoResponse.setReviews(reviews);
 
-
-       return userInfoResponse;
+            List<Long> orders = user.getOrders().stream()
+                    .map(order -> order.getId())
+                    .collect(Collectors.toList());
+            userInfoResponse.setOrders(orders);
+        }
+        return userInfoResponse;
     }
 }
