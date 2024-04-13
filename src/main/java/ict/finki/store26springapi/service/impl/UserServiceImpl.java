@@ -46,22 +46,6 @@ public class UserServiceImpl implements UserService {
 
         if (user.getRole().equals(Role.USER)) {
             userInfoResponse.setShoppingCart(user.getShoppingCart().getId());
-
-            List<Long> creditCards = user.getCreditCards().stream()
-                    .map(creditCard -> creditCard.getId())
-                    .collect(Collectors.toList());
-
-            userInfoResponse.setCreditCards(creditCards);
-
-            List<Long> reviews = user.getReviews().stream()
-                    .map(review -> review.getId())
-                    .collect(Collectors.toList());
-            userInfoResponse.setReviews(reviews);
-
-            List<Long> orders = user.getOrders().stream()
-                    .map(order -> order.getId())
-                    .collect(Collectors.toList());
-            userInfoResponse.setOrders(orders);
         }
         return userInfoResponse;
     }

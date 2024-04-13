@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,13 +39,14 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToOne
+    @ToString.Exclude
     private ShoppingCart shoppingCart;
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<CreditCard> creditCards = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<CreditCard> creditCards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
