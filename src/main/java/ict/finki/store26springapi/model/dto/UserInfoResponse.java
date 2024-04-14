@@ -1,6 +1,7 @@
 package ict.finki.store26springapi.model.dto;
 
 import ict.finki.store26springapi.enums.Role;
+import ict.finki.store26springapi.model.CreditCard;
 import ict.finki.store26springapi.model.Order;
 import ict.finki.store26springapi.model.Review;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class UserInfoResponse {
 
     private List<Long> reviews;
 
-    private List<Long> creditCards;
+    private List<CreditCard> creditCards;
 
     private List<Long> orders;
 }

@@ -9,7 +9,6 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,9 +37,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne
-    @ToString.Exclude
-    private ShoppingCart shoppingCart;
+//    @OneToOne
+//    @ToString.Exclude
+//    private ShoppingCart shoppingCart;
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();

@@ -1,6 +1,9 @@
 package ict.finki.store26springapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +25,7 @@ public class CreditCard {
 
     @ManyToOne
     @JsonIgnore
-    @ToString.Exclude
+//    @ToString.Exclude
     private User user;
 
     private String cardNumber;
