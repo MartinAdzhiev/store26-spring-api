@@ -17,6 +17,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Override
     public List<Category> findAll() {
         return this.categoryRepository.findAll();
@@ -28,25 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> save(String name, String description) {
-        Category category = new Category(name, description);
-
-        return Optional.of(this.categoryRepository.save(category));
-    }
-
-    @Override
     public Optional<Category> save(CategoryDto categoryDto) {
         Category category = new Category(categoryDto.getName(), categoryDto.getDescription());
-
-        return Optional.of(this.categoryRepository.save(category));    }
-
-    @Override
-    public Optional<Category> edit(Long id, String name, String description) {
-        Category category = this.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-
-        category.setName(name);
-        category.setDescription(description);
 
         return Optional.of(this.categoryRepository.save(category));
     }

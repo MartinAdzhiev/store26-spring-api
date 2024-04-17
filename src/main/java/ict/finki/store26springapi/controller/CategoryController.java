@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/admin/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService){
-        this.categoryService=categoryService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Category> findAll() {
         return this.categoryService.findAll();
     }
@@ -37,14 +37,14 @@ public class CategoryController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}/edit")
     public ResponseEntity<Category> edit(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
         return this.categoryService.edit(id, categoryDto)
                 .map(category -> ResponseEntity.ok().body(category))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity deleteById(@PathVariable Long id) {
         this.categoryService.deleteById(id);
 
