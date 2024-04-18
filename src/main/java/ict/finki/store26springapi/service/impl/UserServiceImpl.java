@@ -1,6 +1,7 @@
 package ict.finki.store26springapi.service.impl;
 
 import ict.finki.store26springapi.enums.Role;
+import ict.finki.store26springapi.enums.ShoppingCartStatus;
 import ict.finki.store26springapi.model.CreditCard;
 import ict.finki.store26springapi.model.ShoppingCart;
 import ict.finki.store26springapi.model.User;
@@ -53,14 +54,15 @@ public class UserServiceImpl implements UserService {
         userInfoResponse.setEmail(user.getEmail());
         userInfoResponse.setRole(user.getRole());
 
-        Optional<ShoppingCart> shoppingCart = shoppingCartService.findByUserId(user.getId());
 
-        if (user.getRole().equals(Role.USER) && shoppingCart.isPresent()) {
+        if (user.getRole().equals(Role.USER)) {
+            Optional<ShoppingCart> shoppingCart = shoppingCartService.findByUserId(user.getId());
             userInfoResponse.setShoppingCart(shoppingCart.get().getId());
 
             List<CreditCard> creditCards = creditCardService.findAllByUser(user.getId());
             userInfoResponse.setCreditCards(creditCards);
         }
+
         return userInfoResponse;
     }
 }
