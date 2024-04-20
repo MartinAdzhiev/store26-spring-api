@@ -4,12 +4,14 @@ import ict.finki.store26springapi.model.Category;
 import ict.finki.store26springapi.model.Product;
 import ict.finki.store26springapi.model.Size;
 import ict.finki.store26springapi.model.dto.ProductDto;
+import ict.finki.store26springapi.model.dto.ReviewDto;
 import ict.finki.store26springapi.model.exceptions.CategoryNotFoundException;
 import ict.finki.store26springapi.model.exceptions.ProductNotFoundException;
 import ict.finki.store26springapi.repository.CategoryRepository;
 import ict.finki.store26springapi.repository.ProductRepository;
 import ict.finki.store26springapi.repository.SizeRepository;
 import ict.finki.store26springapi.service.ProductService;
+import ict.finki.store26springapi.service.ReviewService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,10 +27,13 @@ public class ProductServiceImpl implements ProductService {
 
     private final SizeRepository sizeRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SizeRepository sizeRepository) {
+    private final ReviewService reviewService;
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SizeRepository sizeRepository, ReviewService reviewService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.sizeRepository = sizeRepository;
+        this.reviewService = reviewService;
     }
 
     @Override
@@ -106,6 +111,9 @@ public class ProductServiceImpl implements ProductService {
 
         List<Size> sizes = sizeRepository.findAllByProductId(product.getId());
         productDto.setSizes(sizes);
+
+        List<ReviewDto> reviews = reviewService.findAllByProductId(product.getId());
+        productDto.setReviews(reviews);
 
         return productDto;
     }

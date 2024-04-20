@@ -30,6 +30,8 @@ public class ProductDto {
 
     private List<Size> sizes;
 
+    private List<ReviewDto> reviews;
+
     private byte[] byteImage;
 
     private MultipartFile image;

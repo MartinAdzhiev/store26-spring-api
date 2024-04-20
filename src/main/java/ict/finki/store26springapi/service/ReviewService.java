@@ -16,7 +16,7 @@ public interface ReviewService {
 
     List<ReviewDto> findAllByProductId(Long productId);
 
-    Optional<ReviewDto> save(ReviewDto reviewDto) throws IOException;
+    Optional<ReviewDto> save(Long userId, Long productId, ReviewDto reviewDto) throws IOException;
 
     ReviewDto getDto(Review review);
 

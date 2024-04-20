@@ -11,13 +11,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ReviewDto {
 
+    Long id;
+
     private LocalDate createdOn;
 
     private String description;
 
     private double rating;
 
-    private Long userId;
+    private String user;
 
     private Long productId;
 }

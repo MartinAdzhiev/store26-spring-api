@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user/review")
+@RequestMapping("/api/user")
 public class ReviewController {
     private final ReviewService reviewService;
 
@@ -17,40 +17,40 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/review/all")
     public ResponseEntity<List<ReviewDto>> findAll() {
         List<ReviewDto> reviewDtos = reviewService.findAll();
         return ResponseEntity.ok(reviewDtos);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/review/{id}")
     public ResponseEntity<ReviewDto> findById(@PathVariable Long id) {
         return this.reviewService.findById(id)
                 .map(review -> ResponseEntity.ok(reviewService.getDto(review)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}/review")
     public ResponseEntity<List<ReviewDto>> findByUserId(@PathVariable Long id) {
         List<ReviewDto> reviewDtos = reviewService.findAllByUserId(id);
         return ResponseEntity.ok(reviewDtos);
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/product/{id}/review")
     public ResponseEntity<List<ReviewDto>> findByProductId(@PathVariable Long id) {
         List<ReviewDto> reviewDtos = reviewService.findAllByProductId(id);
         return ResponseEntity.ok(reviewDtos);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ReviewDto> addReview(@ModelAttribute ReviewDto reviewDto) throws IOException {
+    @PostMapping("/{userId}/product/{productId}/review/add")
+    public ResponseEntity<ReviewDto> addReview(@PathVariable Long userId, @PathVariable Long productId, @RequestBody ReviewDto reviewDto) throws IOException {
         System.out.println(reviewDto);
-        return this.reviewService.save(reviewDto)
+        return this.reviewService.save(userId, productId, reviewDto)
                 .map(reviewDto1 -> ResponseEntity.ok(reviewDto1))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/review/{id}/delete")
     public ResponseEntity deleteById(@PathVariable Long id) {
         this.reviewService.deleteById(id);
 

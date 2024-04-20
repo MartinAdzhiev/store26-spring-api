@@ -10,6 +10,7 @@ import ict.finki.store26springapi.repository.ProductRepository;
 import ict.finki.store26springapi.repository.ReviewRepository;
 import ict.finki.store26springapi.repository.UserRepository;
 import ict.finki.store26springapi.service.ReviewService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -45,11 +46,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public List<ReviewDto> findAllByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
-        List<Review> reviews = reviewRepository.findAllByUser(user);
+        List<Review> reviews = reviewRepository.findAllByUserId(userId);
 
         return reviews.stream().map(review -> this.getDto(review))
                 .collect(Collectors.toList());
@@ -67,12 +69,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Optional<ReviewDto> save(ReviewDto reviewDto) throws IOException {
-        User user = userRepository.findById(reviewDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(reviewDto.getUserId()));
+    public Optional<ReviewDto> save(Long userId, Long productId, ReviewDto reviewDto) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
-        Product product = productRepository.findById(reviewDto.getProductId())
-                .orElseThrow(() -> new ProductNotFoundException(reviewDto.getProductId()));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         Review review = new Review();
         review.setCreatedOn(LocalDate.now());
@@ -90,10 +92,11 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDto getDto(Review review) {
         ReviewDto reviewDto = new ReviewDto();
 
+        reviewDto.setId(review.getId());
         reviewDto.setCreatedOn(review.getCreatedOn());
         reviewDto.setDescription(review.getDescription());
         reviewDto.setRating(review.getRating());
-        reviewDto.setUserId(review.getUser().getId());
+        reviewDto.setUser(review.getUser().getFirstName() + " " + review.getUser().getLastName());
         reviewDto.setProductId(review.getProduct().getId());
 
         return reviewDto;
