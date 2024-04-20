@@ -14,14 +14,20 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
     private String description;
+
     private double price;
+
     @Lob
     private byte[] image;
 
