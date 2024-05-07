@@ -26,6 +26,12 @@ public class Order {
 
     private LocalDateTime time;
 
+    private String address;
+
+    private String phoneNumber;
+
+    private Double total;
+
     //payment method
     @ManyToOne
     private CreditCard card;
@@ -33,6 +39,6 @@ public class Order {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+//    @OneToMany(mappedBy = "order")
+//    private List<OrderItem> orderItems = new ArrayList<>();
 }

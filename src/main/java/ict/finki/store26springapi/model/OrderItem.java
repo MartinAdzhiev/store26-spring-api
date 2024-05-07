@@ -22,4 +22,7 @@ public class OrderItem {
 
     @ManyToOne
     private Product product;
+
+    @ManyToOne
+    private Size size;
 }

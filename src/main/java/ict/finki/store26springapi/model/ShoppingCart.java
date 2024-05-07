@@ -31,6 +31,6 @@ public class ShoppingCart {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "shoppingCart")
-    private List<CartItem> cartItems = new ArrayList<>();
+//    @OneToMany(mappedBy = "shoppingCart")
+//    private List<CartItem> cartItems = new ArrayList<>();
 }
