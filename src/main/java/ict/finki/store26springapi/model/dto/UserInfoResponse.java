@@ -23,7 +23,7 @@ public class UserInfoResponse {
 
     private Long shoppingCart;
 
-    private List<Long> reviews;
+    private List<ReviewDto> reviews;
 
     private List<CreditCard> creditCards;
 

@@ -1,14 +1,20 @@
 package ict.finki.store26springapi.model.dto;
 
 import ict.finki.store26springapi.enums.Gender;
+import ict.finki.store26springapi.model.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductDto {
+
+    Long id;
 
     private String name;
 
@@ -18,9 +24,16 @@ public class ProductDto {
 
     private double price;
 
-    private byte[] image;
-
-    private List<SizeDto> sizes;
+    private String color;
 
     private Long categoryId;
+
+    private List<Size> sizes;
+
+    private List<ReviewDto> reviews;
+
+    private byte[] byteImage;
+
+    private MultipartFile image;
+
 }

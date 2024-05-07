@@ -28,6 +28,8 @@ public class Product {
 
     private double price;
 
+    private String color;
+
     @Lob
     private byte[] image;
 
