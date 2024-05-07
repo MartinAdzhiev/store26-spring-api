@@ -7,6 +7,8 @@ import ict.finki.store26springapi.model.exceptions.ShoppingCartNotFoundException
 import ict.finki.store26springapi.model.exceptions.SizeNotFoundException;
 import ict.finki.store26springapi.repository.*;
 import ict.finki.store26springapi.service.CartItemService;
+import ict.finki.store26springapi.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,23 +22,26 @@ public class CartItemImpl implements CartItemService {
     private final ProductRepository productRepository;
     private final SizeRepository sizeRepository;
 
-    public CartItemImpl(CartItemRepository cartItemRepository, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, SizeRepository sizeRepository) {
+    private final ProductService productService;
+
+    public CartItemImpl(CartItemRepository cartItemRepository, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, SizeRepository sizeRepository, ProductService productService) {
         this.cartItemRepository = cartItemRepository;
         this.shoppingCartRepository = shoppingCartRepository;
         this.productRepository = productRepository;
         this.sizeRepository = sizeRepository;
+        this.productService = productService;
     }
 
     @Override
-    public Optional<CartItemDto> addCartItem(CartItemDto cartItemDto) {
-        ShoppingCart shoppingCart = this.shoppingCartRepository.findById(cartItemDto.getShoppingCartId())
-                .orElseThrow(() -> new ShoppingCartNotFoundException(cartItemDto.getShoppingCartId()));
+    public Optional<CartItemDto> addCartItem(Long cartId, Long productId, Long sizeId,CartItemDto cartItemDto) {
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findById(cartId)
+                .orElseThrow(() -> new ShoppingCartNotFoundException(cartId));
 
-        Product product = this.productRepository.findById(cartItemDto.getProductId())
-                .orElseThrow(() -> new ProductNotFoundException(cartItemDto.getProductId()));
+        Product product = this.productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
-        Size size = this.sizeRepository.findById(cartItemDto.getSizeId())
-                .orElseThrow(() -> new SizeNotFoundException(cartItemDto.getSizeId()));
+        Size size = this.sizeRepository.findById(sizeId)
+                .orElseThrow(() -> new SizeNotFoundException(sizeId));
 
         CartItem cartItem = new CartItem();
         cartItem.setShoppingCart(shoppingCart);
@@ -50,8 +55,9 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    public List<CartItemDto> getAllCartItemsByUserId(Long id) {
-        List<CartItem> cartItems = this.cartItemRepository.findAll();
+    @Transactional
+    public List<CartItemDto> getAllCartItemsByShoppingCartId(Long cartId) {
+        List<CartItem> cartItems = this.cartItemRepository.findAllByShoppingCart_Id(cartId);
         return cartItems.stream().map(cartItem -> this.getDto(cartItem))
                 .collect(Collectors.toList());
     }
@@ -70,11 +76,13 @@ public class CartItemImpl implements CartItemService {
     public CartItemDto getDto(CartItem cartItem) {
         CartItemDto cartItemDto = new CartItemDto();
 
+
         cartItemDto.setId(cartItem.getId());
         cartItemDto.setShoppingCartId(cartItem.getShoppingCart().getId());
-        cartItemDto.setProductId(cartItem.getProduct().getId());
+        cartItemDto.setProductCartItemResponse(productService.getProductInCartItem(cartItem.getProduct()));
         cartItemDto.setQuantity(cartItem.getQuantity());
         cartItemDto.setSizeId(cartItem.getSize().getId());
+        cartItemDto.setSizeName(cartItem.getSize().getName());
 
         return cartItemDto;
     }

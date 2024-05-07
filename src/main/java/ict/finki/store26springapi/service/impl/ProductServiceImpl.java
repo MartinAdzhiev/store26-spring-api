@@ -3,6 +3,7 @@ package ict.finki.store26springapi.service.impl;
 import ict.finki.store26springapi.model.Category;
 import ict.finki.store26springapi.model.Product;
 import ict.finki.store26springapi.model.Size;
+import ict.finki.store26springapi.model.dto.ProductCartItemResponse;
 import ict.finki.store26springapi.model.dto.ProductDto;
 import ict.finki.store26springapi.model.dto.ReviewDto;
 import ict.finki.store26springapi.model.exceptions.CategoryNotFoundException;
@@ -116,5 +117,19 @@ public class ProductServiceImpl implements ProductService {
         productDto.setReviews(reviews);
 
         return productDto;
+    }
+
+    @Override
+    public ProductCartItemResponse getProductInCartItem(Product product) {
+        ProductCartItemResponse productCartItemResponse = new ProductCartItemResponse();
+
+        productCartItemResponse.setId(product.getId());
+        productCartItemResponse.setName(product.getName());
+        productCartItemResponse.setGender(product.getGender());
+        productCartItemResponse.setColor(product.getColor());
+        productCartItemResponse.setPrice(product.getPrice());
+        productCartItemResponse.setByteImage(product.getImage());
+
+        return productCartItemResponse;
     }
 }

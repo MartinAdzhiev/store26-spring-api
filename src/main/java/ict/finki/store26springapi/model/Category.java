@@ -23,6 +23,6 @@ public class Category {
         this.name = name;
         this.description = description;
     }
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+//    @OneToMany(mappedBy = "category")
+//    private List<Product> products;
 }

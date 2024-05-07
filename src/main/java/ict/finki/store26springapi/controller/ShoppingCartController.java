@@ -31,27 +31,29 @@ public class ShoppingCartController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{userId}/shoppingCart/items")
-    public ResponseEntity<List<CartItemDto>> listCartItems(@PathVariable Long userId) {
-        List<CartItemDto> cartItemDtos = cartItemService.getAllCartItemsByUserId(userId);
+    @GetMapping("/shoppingCart/{cartId}/items")
+    public ResponseEntity<List<CartItemDto>> listCartItems(@PathVariable Long cartId) {
+        List<CartItemDto> cartItemDtos = cartItemService.getAllCartItemsByShoppingCartId(cartId);
         return ResponseEntity.ok(cartItemDtos);
     }
 
-    @PostMapping("/{userId}/shoppingCart/cartItem")
-    public ResponseEntity<CartItemDto> addCartItemToShoppingCart(@PathVariable Long userId, @RequestBody CartItemDto cartItemDto) {
-        return this.cartItemService.addCartItem(cartItemDto)
+    @PostMapping("/shoppingCart/{cartId}/product/{productId}/size/{sizeId}/addCartItem")
+    public ResponseEntity<CartItemDto> addCartItemToShoppingCart(@PathVariable Long cartId,
+                                                                 @PathVariable Long productId,
+                                                                 @PathVariable Long sizeId,
+                                                                 @RequestBody CartItemDto cartItemDto) {
+        return this.cartItemService.addCartItem(cartId, productId, sizeId, cartItemDto)
                 .map(cartItemDto1 -> ResponseEntity.ok(cartItemDto1))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("/{userId}/shoppingCart/cartItem/{cartItemId}")
-    public ResponseEntity<String> deleteCartItemFromShoppingCart(@PathVariable Long userId, @PathVariable Long cartItemId) {
-        try {
-            cartItemService.deleteCartItemById(cartItemId);
-            return ResponseEntity.ok("CartItem deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to delete CartItem: " + e.getMessage());
-        }
+    @DeleteMapping("/cartItem/{cartItemId}/delete")
+    public ResponseEntity<String> deleteCartItemFromShoppingCart(@PathVariable Long cartItemId) {
+        this.cartItemService.deleteCartItemById(cartItemId);
+
+        if (this.cartItemService.getCartItemById(cartItemId).isEmpty())
+            return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
     }
 
 }

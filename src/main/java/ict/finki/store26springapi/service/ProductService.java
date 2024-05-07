@@ -3,6 +3,7 @@ package ict.finki.store26springapi.service;
 import ict.finki.store26springapi.model.CreditCard;
 import ict.finki.store26springapi.model.Product;
 import ict.finki.store26springapi.model.dto.CreditCardDto;
+import ict.finki.store26springapi.model.dto.ProductCartItemResponse;
 import ict.finki.store26springapi.model.dto.ProductDto;
 
 import java.io.IOException;
@@ -22,4 +23,6 @@ public interface ProductService {
     void deleteById(Long id);
 
     ProductDto getDto(Product product);
+
+    ProductCartItemResponse getProductInCartItem(Product product);
 }
