@@ -19,4 +19,6 @@ public interface SizeService {
     Optional<Size> edit(Long id, SizeDto sizeDto);
 
     void deleteById(Long id);
+
+    void updateSize(Long sizeId, int quantity);
 }

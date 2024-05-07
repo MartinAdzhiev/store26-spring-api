@@ -1,10 +1,12 @@
 package ict.finki.store26springapi.service.impl;
 
+import ict.finki.store26springapi.model.OrderItem;
 import ict.finki.store26springapi.model.Product;
 import ict.finki.store26springapi.model.Size;
 import ict.finki.store26springapi.model.dto.SizeDto;
 import ict.finki.store26springapi.model.exceptions.ProductNotFoundException;
 import ict.finki.store26springapi.model.exceptions.SizeNotFoundException;
+import ict.finki.store26springapi.repository.OrderItemRepository;
 import ict.finki.store26springapi.repository.SizeRepository;
 import ict.finki.store26springapi.service.ProductService;
 import ict.finki.store26springapi.service.SizeService;
@@ -19,9 +21,12 @@ public class SizeServiceImpl implements SizeService {
     private final SizeRepository sizeRepository;
     private final ProductService productService;
 
-    public SizeServiceImpl(SizeRepository sizeRepository, ProductService productService) {
+    private final OrderItemRepository orderItemRepository;
+
+    public SizeServiceImpl(SizeRepository sizeRepository, ProductService productService, OrderItemRepository orderItemRepository) {
         this.sizeRepository = sizeRepository;
         this.productService = productService;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Override
@@ -62,5 +67,16 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public void deleteById(Long id) {
         sizeRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateSize(Long id, int quantity) {
+        Size size = this.findById(id)
+                .orElseThrow(() -> new SizeNotFoundException(id));
+
+        size.setQuantity(size.getQuantity()-quantity);
+
+        sizeRepository.save(size);
+
     }
 }

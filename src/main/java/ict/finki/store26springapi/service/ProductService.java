@@ -5,6 +5,7 @@ import ict.finki.store26springapi.model.Product;
 import ict.finki.store26springapi.model.dto.CreditCardDto;
 import ict.finki.store26springapi.model.dto.ProductCartItemResponse;
 import ict.finki.store26springapi.model.dto.ProductDto;
+import ict.finki.store26springapi.model.dto.ProductOrderItemResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,4 +26,6 @@ public interface ProductService {
     ProductDto getDto(Product product);
 
     ProductCartItemResponse getProductInCartItem(Product product);
+
+    ProductOrderItemResponse getProductInOrderItem(Product product);
 }

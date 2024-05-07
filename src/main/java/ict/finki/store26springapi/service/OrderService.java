@@ -3,6 +3,8 @@ package ict.finki.store26springapi.service;
 import ict.finki.store26springapi.enums.OrderStatus;
 import ict.finki.store26springapi.model.Order;
 import ict.finki.store26springapi.model.OrderItem;
+import ict.finki.store26springapi.model.dto.OrderDto;
+import ict.finki.store26springapi.model.dto.OrderItemDto;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -17,9 +19,13 @@ public interface OrderService {
 
     List<Order> findByUserId(Long userId);
 
-    Optional<Order> save(Long userId);
+    Optional<Order> save(Long userId, OrderDto orderDto);
 
-    Optional<Double> calculateOrderTotal(Long orderId);
+    Optional<Order> updateStatus(Long orderId, OrderDto orderDto);
+
+    Double calculateOrderTotal(Long orderId);
+
+    OrderDto getDto(Order order);
 
 
 

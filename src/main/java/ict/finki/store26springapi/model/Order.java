@@ -26,6 +26,12 @@ public class Order {
 
     private LocalDateTime time;
 
+    private String address;
+
+    private String phoneNumber;
+
+    private Double total;
+
     //payment method
     @ManyToOne
     private CreditCard card;
