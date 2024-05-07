@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -25,5 +27,8 @@ public class Size {
     @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
+
+    @OneToMany(mappedBy = "size")
+    private List<CartItem> cartItems;
 
 }
