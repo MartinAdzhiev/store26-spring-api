@@ -1,5 +1,6 @@
 package ict.finki.store26springapi.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ict.finki.store26springapi.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
 

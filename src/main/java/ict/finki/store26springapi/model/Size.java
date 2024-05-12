@@ -2,6 +2,7 @@ package ict.finki.store26springapi.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class Size {
     private Product product;
 
     @OneToMany(mappedBy = "size")
+    @JsonManagedReference
+    @JsonIgnore
     private List<CartItem> cartItems;
 
 }

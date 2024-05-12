@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/category")
+@RequestMapping("/api")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -18,33 +18,38 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/admin/category/all")
     public List<Category> findAll() {
         return this.categoryService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/category/all")
+    public List<Category> findAllUser() {
+        return this.categoryService.findAll();
+    }
+
+    @GetMapping("/admin/category/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long id) {
         return this.categoryService.findById(id)
                 .map(category -> ResponseEntity.ok().body(category))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add")
+    @PostMapping("/admin/category/add")
     public ResponseEntity<Category> save(@RequestBody CategoryDto categoryDto) {
         return this.categoryService.save(categoryDto)
                 .map(category -> ResponseEntity.ok().body(category))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PutMapping("/{id}/edit")
+    @PutMapping("/admin/category/{id}/edit")
     public ResponseEntity<Category> edit(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
         return this.categoryService.edit(id, categoryDto)
                 .map(category -> ResponseEntity.ok().body(category))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/admin/category/{id}/delete")
     public ResponseEntity deleteById(@PathVariable Long id) {
         this.categoryService.deleteById(id);
 
