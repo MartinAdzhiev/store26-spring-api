@@ -1,10 +1,7 @@
 package ict.finki.store26springapi.service;
 
 import ict.finki.store26springapi.model.User;
-import ict.finki.store26springapi.model.dto.JwtAuthenticationResponse;
-import ict.finki.store26springapi.model.dto.LogInRequest;
-import ict.finki.store26springapi.model.dto.RefreshTokenRequest;
-import ict.finki.store26springapi.model.dto.RegisterRequest;
+import ict.finki.store26springapi.model.dto.*;
 
 public interface AuthenticationService {
 
@@ -13,4 +10,6 @@ public interface AuthenticationService {
     JwtAuthenticationResponse logIn(LogInRequest logInRequest);
 
     JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+
+    UserInfoResponse userInfo (String token);
 }

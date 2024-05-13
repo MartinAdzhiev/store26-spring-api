@@ -1,16 +1,10 @@
 package ict.finki.store26springapi.controller;
 
 import ict.finki.store26springapi.model.User;
-import ict.finki.store26springapi.model.dto.JwtAuthenticationResponse;
-import ict.finki.store26springapi.model.dto.LogInRequest;
-import ict.finki.store26springapi.model.dto.RefreshTokenRequest;
-import ict.finki.store26springapi.model.dto.RegisterRequest;
+import ict.finki.store26springapi.model.dto.*;
 import ict.finki.store26springapi.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,4 +30,11 @@ public class AuthenticationController {
     public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
     }
+
+    @GetMapping("/user-info")
+    public ResponseEntity<UserInfoResponse> userInfo (@RequestHeader(value="Authorization") String bearerToken) {
+        return ResponseEntity.ok(authenticationService.userInfo(bearerToken));
+    }
+
+
 }

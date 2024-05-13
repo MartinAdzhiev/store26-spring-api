@@ -1,34 +1,51 @@
 package ict.finki.store26springapi.service.impl;
 
 import ict.finki.store26springapi.enums.Role;
+import ict.finki.store26springapi.model.ShoppingCart;
 import ict.finki.store26springapi.model.User;
-import ict.finki.store26springapi.model.dto.JwtAuthenticationResponse;
-import ict.finki.store26springapi.model.dto.LogInRequest;
-import ict.finki.store26springapi.model.dto.RefreshTokenRequest;
-import ict.finki.store26springapi.model.dto.RegisterRequest;
+import ict.finki.store26springapi.model.dto.*;
 import ict.finki.store26springapi.repository.UserRepository;
 import ict.finki.store26springapi.service.AuthenticationService;
 import ict.finki.store26springapi.service.JwtService;
+import ict.finki.store26springapi.service.ShoppingCartService;
+import ict.finki.store26springapi.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
+    private final UserService userService;
+
+    private final ShoppingCartService shoppingCartService;
+
+
+
+    public AuthenticationServiceImpl(UserRepository userRepository,
+                                     PasswordEncoder passwordEncoder,
+                                     AuthenticationManager authenticationManager,
+                                     JwtService jwtService,
+                                     UserService userService,
+                                     ShoppingCartService shoppingCartService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.userService = userService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     public User register(RegisterRequest registerRequest) {
@@ -40,7 +57,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
-        return userRepository.save(user);
+
+        User savedUser = userRepository.save(user);
+        ShoppingCart shoppingCart = shoppingCartService.save(savedUser.getId()).orElseThrow();
+
+        return savedUser;
     }
 
     public JwtAuthenticationResponse logIn(LogInRequest logInRequest) {
@@ -72,5 +93,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return jwtAuthenticationResponse;
         }
         return null;
+    }
+
+    public UserInfoResponse userInfo (String bearerToken) {
+        String token = bearerToken.split(" ")[1];
+        String userEmail = jwtService.extractUsername(token);
+
+
+        return userService.userInfo(userEmail);
     }
 }
